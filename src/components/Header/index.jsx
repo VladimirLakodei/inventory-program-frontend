@@ -23,17 +23,17 @@ export const Header = () => {
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
-          <a className={styles.logo} href="/">
-            <div>ARCHAKOV BLOG</div>
-          </a>
+          <Link to="/">
+            <div className={styles.logo}>Головна</div>
+          </Link>
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link href="/acts/create">
-                  <Button variant="contained">Написать статью</Button>
+                <Link to="/add-act">
+                  <Button variant="contained">Створити акт</Button>
                 </Link>
                 <Button onClick={onClickLogout} variant="contained" color="error">
-                  Выйти
+                  Вийти
                 </Button>
               </>
             ) : (

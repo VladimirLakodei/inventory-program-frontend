@@ -21,35 +21,17 @@ export const Home = () => {
 
   return (
     <>
-      <Tabs
+      {/* <Tabs
         style={{ marginBottom: 15 }}
         value={0}
         aria-label="basic tabs example"
       >
         <Tab label="Новые" />
         <Tab label="Популярные" />
-      </Tabs>
+      </Tabs> */}
       <Grid container spacing={4}>
-        <Grid xs={8} item>
-          {(isActsLoading ? [...Array(5)] : acts.list).map((element, index) => (
-            isActsLoading ?
-            <Act
-            id={index}
-            key={index} />
-            :
-            <Act
-              id={element._id}
-              key={element._id}
-              title={element.description}
-              user={{ fullName: element.materiallyResponsible }}
-              createdAt={element.createdAt}
-              viewsCount={150}
-              commentsCount={3}
-              isEditable
-            />
-          ))}
-        </Grid>
-        <Grid xs={4} item>
+        {/* Filters and Sort */}
+        {/* <Grid xs={4} item>
           <TagsBlock
             items={["react", "typescript", "заметки"]}
             isLoading={false}
@@ -73,6 +55,25 @@ export const Home = () => {
             ]}
             isLoading={false}
           />
+        </Grid> */}
+        <Grid xs={8} item>
+          {(isActsLoading ? [...Array(5)] : acts.list).map((element, index) => (
+            isActsLoading ?
+            <Act
+            id={index}
+            key={index} />
+            :
+            <Act
+              id={element._id}
+              key={element._id}
+              title={element.description}
+              user={{ fullName: element.materiallyResponsible }}
+              createdAt={element.createdAt}
+              viewsCount={150}
+              commentsCount={3}
+              isEditable
+            />
+          ))}
         </Grid>
       </Grid>
     </>

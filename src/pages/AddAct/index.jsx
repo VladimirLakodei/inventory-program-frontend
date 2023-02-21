@@ -19,7 +19,7 @@ export const AddAct = () => {
       spellChecker: false,
       maxHeight: "400px",
       autofocus: true,
-      placeholder: "Введите текст...",
+      placeholder: "Опис...",
       status: false,
       autosave: {
         enabled: true,
@@ -31,21 +31,10 @@ export const AddAct = () => {
 
   return (
     <Paper style={{ padding: 30 }}>
-      <Button variant="outlined" size="large">
-        Загрузить превью
-      </Button>
-      <br />
-      <br />
       <TextField
         classes={{ root: styles.title }}
         variant="standard"
-        placeholder="Заголовок статьи..."
-        fullWidth
-      />
-      <TextField
-        classes={{ root: styles.tags }}
-        variant="standard"
-        placeholder="Тэги"
+        placeholder="Назва"
         fullWidth
       />
       <SimpleMDE
@@ -56,9 +45,9 @@ export const AddAct = () => {
       />
       <div className={styles.buttons}>
         <Button size="large" variant="contained">
-          Опубликовать
+          Опублікувати
         </Button>
-        <Button size="large">Отмена</Button>
+        <Button size="large">Відміна</Button>
       </div>
     </Paper>
   );

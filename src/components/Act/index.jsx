@@ -62,7 +62,7 @@ export const Act = ({
             ))}
           </ul> */}
           {children && <div className={styles.content}>{children}</div>}
-          <ul className={styles.postDetails}>
+          {/* <ul className={styles.postDetails}>
             <li>
               <EyeIcon />
               <span>{viewsCount}</span>
@@ -71,7 +71,7 @@ export const Act = ({
               <CommentIcon />
               <span>{commentsCount}</span>
             </li>
-          </ul>
+          </ul> */}
         </div>
       </div>
     </div>
