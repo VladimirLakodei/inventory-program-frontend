@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "../axios";
 
 import { Act } from "../components/Act";
-import { Index } from "../components/AddComment";
-import { CommentsBlock } from "../components/CommentsBlock";
+// import { Index } from "../components/AddComment";
+// import { CommentsBlock } from "../components/CommentsBlock";
 import { DataGrid } from '@mui/x-data-grid';
 
 export const FullAct = () => {
@@ -74,7 +74,7 @@ export const FullAct = () => {
         setData([]);
         setLoading(false);
       });
-  }, []);
+  }, [id]);
 
   if (isLoading) {
     return <Act isLoading={isLoading} isFullAct />

@@ -1,23 +1,32 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchActs } from "../redux/slices/acts";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import { selectIsAuth } from "../redux/slices/auth";
+import { useDispatch, useSelector } from "react-redux";
+
+// import Tabs from "@mui/material/Tabs";
+// import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
  
 import { Act } from "../components/Act";
-import { TagsBlock } from "../components/TagsBlock";
-import { CommentsBlock } from "../components/CommentsBlock";
+// import { TagsBlock } from "../components/TagsBlock";
+// import { CommentsBlock } from "../components/CommentsBlock";
 
 export const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { acts } = useSelector(state => state.acts);
 
+  const isAuth = useSelector(selectIsAuth);
   const isActsLoading = acts.status === 'loading';
 
   React.useEffect(() => {
-    dispatch(fetchActs());
-  }, []);
+    if (isAuth) {
+      dispatch(fetchActs());
+    } else {
+      navigate('/login');
+    }
+  }, [isAuth, dispatch, navigate]);
 
   return (
     <>
