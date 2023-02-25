@@ -84,7 +84,8 @@ export const FullAct = () => {
     <>
       <Act
         id={data._id}
-        title={data.description}
+        title={data.title}
+        description={data.description}
         user={{ fullName: data.materiallyResponsible }}
         createdAt={data.createdAt}
         viewsCount={150}

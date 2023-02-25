@@ -75,7 +75,9 @@ export const Home = () => {
             <Act
               id={element._id}
               key={element._id}
-              title={element.description}
+              title={element.title}
+              number={element.number}
+              description={element.description}
               user={{ fullName: element.materiallyResponsible }}
               createdAt={element.createdAt}
               viewsCount={150}
