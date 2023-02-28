@@ -23,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/acts/:id" element={<FullAct />} />
+          <Route path="/acts/:id/edit" element={<AddAct />} />
           <Route path="/add-act" element={<AddAct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />

@@ -8,7 +8,7 @@ export const fetchActs = createAsyncThunk('/acts/fetchActs', async () => {
 
 export const fetchRemoveAct = createAsyncThunk('/acts/fetchRemoveAct', async (id) => {
     const { data } = await axios.delete(`/acts/${id}`);
-    return id;
+    return { ...data, id};
 });
 
 const initialState = {
@@ -39,7 +39,7 @@ const actsSlice = createSlice({
             state.acts.status = 'loading';
         },
         [fetchRemoveAct.fulfilled]: (state, action) => {
-            state.acts.list = state.acts.list.filter(act => act._id !== action.payload);
+            state.acts.list = state.acts.list.filter(act => act._id !== action.payload.id);
             state.acts.status = 'loaded';
         },
         [fetchRemoveAct.rejected]: (state) => {

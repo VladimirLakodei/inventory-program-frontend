@@ -1,11 +1,11 @@
-import React from "react";
 import axios from "../../axios";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAct } from "../../redux/slices/act";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { selectIsAuth } from "../../redux/slices/auth";
 
-import { Navigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
@@ -15,20 +15,37 @@ import "easymde/dist/easymde.min.css";
 import styles from "./AddAct.module.scss";
 
 export const AddAct = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
+  const isEditing = Boolean(id);
+  const { act } = useSelector(state => state.act);
   const [isLoading, setLoading] = React.useState(false);
   const [description, setDescription] = React.useState('');
+
+  // console.log('act 2', act)
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchAct(id));
+    }
+  }, [id]);
+
+  useEffect(() => {
+    setDescription(act.description);
+  }, [act]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid }
   } = useForm({
+    values: act,
     defaultValues: {
-      title : '',
-      number : '',
-      location : '',
+      title: '',
+      number: '',
+      location: '',
       materiallyResponsible: '',
     }
   });
@@ -41,7 +58,7 @@ export const AddAct = () => {
     () => ({
       spellChecker: false,
       maxHeight: "200px",
-      autofocus: true,
+      autofocus: false,
       placeholder: "Опис...",
       status: false,
       autosave: {
@@ -52,21 +69,27 @@ export const AddAct = () => {
     []
   );
 
-  if (!window.localStorage.getItem('token') && !isAuth) {
-    return <Navigate to="/login" />;
-  }
-
   const onSubmit = async (values) => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('/acts', { description, ...values });
-      const id = data._id;
-      navigate(`/acts/${id}`);
+      let _id = id;
+
+      const { data } = isEditing ?
+        await axios.patch(`/acts/${id}`, { ...values, description }) :
+        await axios.post('/acts', { ...values, description });
+
+      _id = isEditing ? _id : data._id;
+      navigate(`/acts/${_id}`);
     } catch (error) {
       setLoading(false);
+      console.error(error);
       alert('Не вдалось створити акт!');
     }
+  }
+
+  if (!window.localStorage.getItem('token') && !isAuth) {
+    return <Navigate to="/login" />;
   }
 
   return (
@@ -79,6 +102,7 @@ export const AddAct = () => {
           margin="normal"
           fullWidth
           type="text"
+          autoFocus={true}
           error={Boolean(errors.title?.message)}
           helperText={errors.title?.message}
           {...register('title', { required: 'Вкажіть назву' })} />
@@ -123,7 +147,7 @@ export const AddAct = () => {
         />
         <div className={styles.buttons}>
           <Button disabled={!isValid || isLoading} type="submit" size="large" variant="contained">
-            Створити
+            {isEditing ? 'Редагувати' : 'Створити'}
           </Button>
           <Button size="large">Відміна</Button>
         </div>

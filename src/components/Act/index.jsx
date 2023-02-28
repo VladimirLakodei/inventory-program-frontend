@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchRemoveAct } from "../../redux/slices/acts";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Clear";
@@ -24,11 +24,16 @@ export const Act = ({
   isLoading,
   isEditable,
 }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onClickRemove = () => {
+  const onClickRemove = async () => {
     if (window.confirm('Ви точно хочете видалити акт?')) {
-      dispatch(fetchRemoveAct(id));
+      const data = await dispatch(fetchRemoveAct(id));
+
+      if (data.payload.success) {
+        navigate('/');
+      }
     }
   }
 
@@ -40,9 +45,11 @@ export const Act = ({
     <div className={clsx(styles.root, { [styles.rootFull]: isFullAct })}>
       {isEditable && (
         <div className={styles.editButtons}>
-          <IconButton color="primary">
-            <EditIcon />
-          </IconButton>
+          <Link to={`/acts/${id}/edit`}>
+            <IconButton color="primary">
+              <EditIcon />
+            </IconButton>
+          </Link>
           <IconButton color="secondary" onClick={() => {onClickRemove()}}>
             <DeleteIcon />
           </IconButton>

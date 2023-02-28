@@ -91,6 +91,7 @@ export const FullAct = () => {
         viewsCount={150}
         commentsCount={3}
         isFullAct
+        isEditable
       >
         <div style={{ display: 'flex', height: '658px' }}>
           <div style={{ flexGrow: 1 }}>
