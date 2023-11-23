@@ -20,34 +20,43 @@ export const AddAct = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
   const isEditing = Boolean(id);
-  const { act } = useSelector(state => state.act);
+  const { act } = useSelector((state) => state.act);
   const [isLoading, setLoading] = React.useState(false);
-  const [description, setDescription] = React.useState('');
-
-  // console.log('act 2', act)
+  const [actData, setAct] = React.useState({
+    title: id ? "-" : "",
+    number: id ? "-" : "",
+    location: id ? "-" : "",
+    materiallyResponsible: id ? "-" : "",
+  });
+  const [description, setDescription] = React.useState("");
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchAct(id));
-    }
+    setAct({
+      title: id ? "-" : "",
+      number: id ? "-" : "",
+      location: id ? "-" : "",
+      materiallyResponsible: id ? "-" : "",
+    });
+    dispatch(fetchAct(id));
   }, [id]);
 
   useEffect(() => {
-    setDescription(act.description);
+    setAct({ ...act });
+    setDescription(act?.description || "");
   }, [act]);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
   } = useForm({
-    values: act,
+    values: actData,
     defaultValues: {
-      title: '',
-      number: '',
-      location: '',
-      materiallyResponsible: '',
-    }
+      title: "",
+      number: "",
+      location: "",
+      materiallyResponsible: "",
+    },
   });
 
   const onChangeDescription = React.useCallback((value) => {
@@ -69,26 +78,30 @@ export const AddAct = () => {
     []
   );
 
+  const onCancel = async () => {
+    navigate(`/`);
+  };
+
   const onSubmit = async (values) => {
     setLoading(true);
 
     try {
       let _id = id;
 
-      const { data } = isEditing ?
-        await axios.patch(`/acts/${id}`, { ...values, description }) :
-        await axios.post('/acts', { ...values, description });
+      const { data } = isEditing
+        ? await axios.patch(`/acts/${id}`, { ...values, description })
+        : await axios.post("/acts", { ...values, description });
 
       _id = isEditing ? _id : data._id;
       navigate(`/acts/${_id}`);
     } catch (error) {
       setLoading(false);
       console.error(error);
-      alert('Не вдалось створити акт!');
+      alert("Не вдалось створити акт!");
     }
-  }
+  };
 
-  if (!window.localStorage.getItem('token') && !isAuth) {
+  if (!window.localStorage.getItem("token") && !isAuth) {
     return <Navigate to="/login" />;
   }
 
@@ -102,10 +115,10 @@ export const AddAct = () => {
           margin="normal"
           fullWidth
           type="text"
-          autoFocus={true}
           error={Boolean(errors.title?.message)}
           helperText={errors.title?.message}
-          {...register('title', { required: 'Вкажіть назву' })} />
+          {...register("title", { required: "Вкажіть назву" })}
+        />
         <TextField
           classes={{ root: styles.textField }}
           variant="standard"
@@ -115,7 +128,7 @@ export const AddAct = () => {
           type="text"
           error={Boolean(errors.number?.message)}
           helperText={errors.number?.message}
-          {...register('number', { required: 'Вкажіть номер' })}
+          {...register("number", { required: "Вкажіть номер" })}
         />
         <TextField
           classes={{ root: styles.textField }}
@@ -126,7 +139,7 @@ export const AddAct = () => {
           type="text"
           error={Boolean(errors.location?.message)}
           helperText={errors.location?.message}
-          {...register('location', { required: 'Вкажіть місце розташування' })}
+          {...register("location", { required: "Вкажіть місце розташування" })}
         />
         <TextField
           classes={{ root: styles.textField }}
@@ -137,7 +150,9 @@ export const AddAct = () => {
           type="text"
           error={Boolean(errors.materiallyResponsible?.message)}
           helperText={errors.materiallyResponsible?.message}
-          {...register('materiallyResponsible', { required: 'Вкажіть місце матеріально відповідального' })}
+          {...register("materiallyResponsible", {
+            required: "Вкажіть місце матеріально відповідального",
+          })}
         />
         <SimpleMDE
           className={styles.editor}
@@ -146,10 +161,17 @@ export const AddAct = () => {
           options={options}
         />
         <div className={styles.buttons}>
-          <Button disabled={!isValid || isLoading} type="submit" size="large" variant="contained">
-            {isEditing ? 'Редагувати' : 'Створити'}
+          <Button
+            disabled={!isValid || isLoading}
+            type="submit"
+            size="large"
+            variant="contained"
+          >
+            {isEditing ? "Редагувати" : "Створити"}
           </Button>
-          <Button size="large">Відміна</Button>
+          <Button size="large" onClick={onCancel}>
+            Відміна
+          </Button>
         </div>
       </form>
     </Paper>

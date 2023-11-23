@@ -28,7 +28,7 @@ export const Login = () => {
 
   const onSubmit = async (values) => {
     const data = await dispatch(fetchAuth(values));
-    const token = data.payload.user && data.payload.user.token;
+    const token = data.payload?.user?.token;
 
     if (token) {
       window.localStorage.setItem('token', token);

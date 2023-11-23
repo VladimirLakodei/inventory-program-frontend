@@ -40,7 +40,7 @@ const authSlice = createSlice({
         },
         [fetchAuth.rejected]: (state) => {
             state.data = null;
-            state.acts.status = 'errored';
+            state.status = 'errored';
         },
         [fetchAuthMe.pending]: (state) => {
             state.data = null;
@@ -52,7 +52,7 @@ const authSlice = createSlice({
         },
         [fetchAuthMe.rejected]: (state) => {
             state.data = null;
-            state.acts.status = 'errored';
+            state.status = 'errored';
         },
         [fetchRegister.pending]: (state) => {
             state.data = null;
@@ -64,7 +64,7 @@ const authSlice = createSlice({
         },
         [fetchRegister.rejected]: (state) => {
             state.data = null;
-            state.acts.status = 'errored';
+            state.status = 'errored';
         },
     }
 });
