@@ -6,6 +6,7 @@ import { fetchRemoveAct } from "../../redux/slices/acts";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
+import AddCircle from "@mui/icons-material/AddCircle";
 // import EyeIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 // import CommentIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 
@@ -23,19 +24,20 @@ export const Act = ({
   isFullAct,
   isLoading,
   isEditable,
+  isAddItem,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onClickRemove = async () => {
-    if (window.confirm('Ви точно хочете видалити акт?')) {
+    if (window.confirm("Ви точно хочете видалити акт?")) {
       const data = await dispatch(fetchRemoveAct(id));
 
       if (data.payload.success) {
-        navigate('/');
+        navigate("/");
       }
     }
-  }
+  };
 
   if (isLoading) {
     return <ActSkeleton />;
@@ -45,12 +47,22 @@ export const Act = ({
     <div className={clsx(styles.root, { [styles.rootFull]: isFullAct })}>
       {isEditable && (
         <div className={styles.editButtons}>
+          <Link to={`/acts/${id}/add-item`}>
+            <IconButton color="primary">
+              <AddCircle />
+            </IconButton>
+          </Link>
           <Link to={`/acts/${id}/edit`}>
             <IconButton color="primary">
               <EditIcon />
             </IconButton>
           </Link>
-          <IconButton color="secondary" onClick={() => {onClickRemove()}}>
+          <IconButton
+            color="secondary"
+            onClick={() => {
+              onClickRemove();
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </div>
@@ -63,9 +75,7 @@ export const Act = ({
       <div className={styles.wrapper}>
         <UserInfo {...user} additionalText={createdAt} />
         <div className={styles.indention}>
-          <h2
-            className={clsx(styles.title, { [styles.titleFull]: isFullAct })}
-          >
+          <h2 className={clsx(styles.title, { [styles.titleFull]: isFullAct })}>
             {isFullAct ? title : <Link to={`/acts/${id}`}>{title}</Link>}
           </h2>
           <p>{description}</p>
