@@ -1,9 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../axios";
 
-export const fetchActs = createAsyncThunk("/acts/fetchActs", async () => {
-  const { data } = await axios.get("/acts");
-  return data;
+export const fetchActs = createAsyncThunk("/acts/fetchActs", async (search) => {
+  if (search && search.item) {
+    const { searchTerm, searchProperty } = search.item;
+
+    const { data } = await axios.get(
+      `/acts/search?searchTerm=${searchTerm}&searchProperty=${searchProperty}`
+    );
+    return data;
+  } else {
+    const { data } = await axios.get("/acts");
+    return data;
+  }
 });
 
 export const fetchRemoveAct = createAsyncThunk(
